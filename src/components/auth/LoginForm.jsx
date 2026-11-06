@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Field from "../Field";
 import FieldSet from "../FieldSet";
+import { useAuth } from "../../hooks/useAuth";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const {
     register,
@@ -13,25 +15,14 @@ export const LoginForm = () => {
     setError,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("form data", data);
-    setError("manual", null); // Clear previous manual errors
+  const onSubmit = (formData) => {
+    console.log("login form data", formData);
+    // Make an API Call
+    // Will Return Tokens and Logged in user information
 
-    const user = {
-      email: "shamimhcp@gmail.com",
-      password: "12345600",
-    };
-
-    const found = data.email === user.email && data.password === user.password;
-
-    if (!found) {
-      setError("manual", {
-        type: "manual",
-        message: "Invalid email or password",
-      });
-    } else {
-      navigate("/");
-    }
+    const user = { ...formData };
+    setAuth({ user });
+    navigate("/");
   };
   return (
     <form

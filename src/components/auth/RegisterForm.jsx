@@ -11,7 +11,7 @@ export const RegisterForm = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log("form data", data);
+    console.log("register form data", data);
 
     const matched = data.password === data.confirmPassword;
     if (!matched) {
