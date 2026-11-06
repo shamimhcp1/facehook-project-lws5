@@ -1,13 +1,21 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 
 function App() {
   return (
     <>
-      <div>
-        <p className="text-3xl font-bold underline text-red-600 ">
-          Project - FaceHook - Lws Module 5
-        </p>
-      </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} exact/>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/me" element={<ProfilePage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 }
