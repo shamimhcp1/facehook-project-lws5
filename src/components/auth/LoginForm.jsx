@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Field from "../Field";
 import FieldSet from "../FieldSet";
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -16,7 +19,7 @@ export const LoginForm = () => {
 
     const user = {
       email: "shamimhcp@gmail.com",
-      password: "123456",
+      password: "12345600",
     };
 
     const found = data.email === user.email && data.password === user.password;
@@ -26,6 +29,8 @@ export const LoginForm = () => {
         type: "manual",
         message: "Invalid email or password",
       });
+    } else {
+      navigate("/");
     }
   };
   return (
