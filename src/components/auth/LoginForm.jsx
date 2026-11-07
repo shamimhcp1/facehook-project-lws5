@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Field from "../Field";
 import FieldSet from "../FieldSet";
 import { useAuth } from "../../hooks/useAuth";
+import { api } from "../../api";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -15,14 +16,31 @@ export const LoginForm = () => {
     setError,
   } = useForm();
 
-  const onSubmit = (formData) => {
-    console.log("login form data", formData);
-    // Make an API Call
-    // Will Return Tokens and Logged in user information
+  const onSubmit = async (formData) => {
+    try {
+      const response = await api.post(
+        `/auth/login`,
+        formData,
+      );
 
-    const user = { ...formData };
-    setAuth({ user });
-    navigate("/");
+      if (response.status === 200) {
+        const { token, user } = response.data;
+        if (token) {
+          const authToken = token.token;
+          const refreshToken = token.refreshToken;
+          console.log("login time auth token", authToken);
+
+          setAuth({ user, authToken, refreshToken });
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      setError("root.random", {
+        type: "random",
+        message: "Invalid email or password",
+      });
+    }
   };
   return (
     <form
@@ -56,9 +74,9 @@ export const LoginForm = () => {
             id="password"
           />
         </Field>
-        {errors.manual && (
-          <div className="m-2 text-sm text-red-600">
-            {errors.manual.message}
+        {errors?.root?.random && (
+          <div className="my-2 pb-2 text-sm text-red-600">
+            {errors.root.random.message}
           </div>
         )}
         {/* login Btn */}
